@@ -53,3 +53,16 @@ export async function countTasksByStatus(): Promise<Record<string, number>> {
   }
   return out;
 }
+
+export async function listTodayTasks(limit = 100): Promise<TaskDto[]> {
+  const { rows } = await sql`
+    SELECT id, project_id, title, description, status, priority, due_at, tags, created_at, updated_at
+    FROM tasks
+    WHERE status != 'done'
+      AND due_at IS NOT NULL
+      AND due_at <= (NOW() + interval '24 hours')
+    ORDER BY due_at ASC
+    LIMIT ${limit}
+  `;
+  return rows.map(rowToTaskDto);
+}

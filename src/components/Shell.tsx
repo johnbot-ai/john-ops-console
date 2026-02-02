@@ -24,6 +24,7 @@ export function Shell(props: {
         <nav className={styles.nav}>
           <Link className={isActive("/")} href={"/"}>Dashboard</Link>
           <Link className={isActive("/projects")} href={"/projects"}>Projects</Link>
+          <Link className={isActive("/today")} href={"/today"}>Today</Link>
         </nav>
 
         <div style={{ marginTop: 18, color: "var(--muted-2)", fontSize: 12 }}>
