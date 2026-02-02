@@ -1,0 +1,46 @@
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 340px;
+  gap: 12px;
+}
+
+@media (max-width: 980px){
+  .grid{ grid-template-columns: 1fr; }
+}
+
+.headerRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.title{
+  font-size: 16px;
+  font-weight: 750;
+}
+
+.kv{
+  display:grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.k{ color: var(--muted); }
+
+.actions{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dangerZone{
+  border: 1px solid rgba(255,77,77,.28);
+  border-radius: var(--radius-md);
+  background: rgba(255,77,77,.06);
+}
+
+.dangerHeader{ padding: 12px 14px; border-bottom: 1px solid rgba(255,77,77,.22); font-weight: 700; }
+.dangerBody{ padding: 12px 14px; }

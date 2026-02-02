@@ -24,6 +24,7 @@ export function Shell(props: {
         <nav className={styles.nav}>
           <Link className={isActive("/")} href={"/"}>Dashboard</Link>
           <Link className={isActive("/projects")} href={"/projects"}>Projects</Link>
+          <Link className={isActive("/tasks")} href={"/tasks"}>Tasks</Link>
           <Link className={isActive("/today")} href={"/today"}>Today</Link>
         </nav>
 
