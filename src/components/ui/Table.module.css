@@ -1,0 +1,33 @@
+.tableWrap{
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: rgba(0,0,0,.35);
+}
+
+.table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.th, .td{
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.th{
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .2px;
+  background: rgba(255,255,255,.03);
+}
+
+.tr:hover .td{ background: rgba(255,255,255,.02); }
+
+.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+.right{ text-align: right; }
+
+.small{ font-size: 12px; color: var(--muted); }

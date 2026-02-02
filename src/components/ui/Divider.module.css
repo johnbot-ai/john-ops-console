@@ -1,0 +1,5 @@
+.hr{
+  height: 1px;
+  background: var(--border);
+  margin: 14px 0;
+}

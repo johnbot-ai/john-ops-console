@@ -1,0 +1,23 @@
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.dot{
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.32);
+}
+
+.accent{ border-color: rgba(76,125,255,.55); background: rgba(76,125,255,.12); color: rgba(122,162,255,.95); }
+.danger{ border-color: rgba(255,77,77,.55); background: rgba(255,77,77,.10); color: rgba(255,180,180,.95); }
+.success{ border-color: rgba(70,255,168,.35); background: rgba(70,255,168,.08); color: rgba(175,255,220,.92); }
