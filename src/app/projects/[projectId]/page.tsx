@@ -5,6 +5,7 @@ import { Shell } from "@/components/Shell";
 import { Card, CardInner } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Field, Input, Select } from "@/components/ui/Input";
+import { TaskRow } from "@/components/TaskRow";
 import { getProject, listTasksForProject } from "@/lib/queries";
 import { sql } from "@/lib/db";
 
@@ -27,6 +28,37 @@ export default async function ProjectDetailPage(props: { params: Promise<{ proje
     await sql`
       INSERT INTO tasks (project_id, title, status, priority)
       VALUES (${projectId}, ${title}, ${status}, ${priority})
+    `;
+
+    redirect(`/projects/${projectId}`);
+  }
+
+  async function moveTask(formData: FormData) {
+    "use server";
+
+    const taskId = String(formData.get("taskId") ?? "");
+    const status = String(formData.get("status") ?? "");
+
+    if (!taskId || !status) return;
+
+    await sql`
+      UPDATE tasks
+      SET status = ${status}, updated_at = NOW()
+      WHERE id = ${taskId} AND project_id = ${projectId}
+    `;
+
+    redirect(`/projects/${projectId}`);
+  }
+
+  async function deleteTask(formData: FormData) {
+    "use server";
+
+    const taskId = String(formData.get("taskId") ?? "");
+    if (!taskId) return;
+
+    await sql`
+      DELETE FROM tasks
+      WHERE id = ${taskId} AND project_id = ${projectId}
     `;
 
     redirect(`/projects/${projectId}`);
@@ -65,20 +97,30 @@ export default async function ProjectDetailPage(props: { params: Promise<{ proje
 
         <div style={{ display: "grid", gap: 10 }}>
           {tasks.map((t) => (
-            <Card key={t.id}>
-              <CardInner>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-                  <div>
-                    <div style={{ fontWeight: 650 }}>{t.title}</div>
-                    <div className="muted" style={{ fontSize: 13, marginTop: 4 }}>
-                      {t.status} • {t.priority}
-                      {t.dueAt ? ` • due ${new Date(t.dueAt).toLocaleString()}` : ""}
-                    </div>
-                  </div>
-                  <div className="muted" style={{ fontSize: 12 }}>updated {new Date(t.updatedAt).toLocaleString()}</div>
-                </div>
-              </CardInner>
-            </Card>
+            <div key={t.id}>
+              <TaskRow task={t} />
+
+              <div style={{ display: "flex", gap: 8, marginTop: 8, justifyContent: "flex-end" }}>
+                <form action={moveTask}>
+                  <input type="hidden" name="taskId" value={t.id} />
+                  <input type="hidden" name="status" value={t.status === "doing" ? "todo" : "doing"} />
+                  <Button size="sm">{t.status === "doing" ? "To-do" : "Doing"}</Button>
+                </form>
+
+                <form action={moveTask}>
+                  <input type="hidden" name="taskId" value={t.id} />
+                  <input type="hidden" name="status" value={t.status === "done" ? "todo" : "done"} />
+                  <Button size="sm" variant={t.status === "done" ? "ghost" : "primary"}>
+                    {t.status === "done" ? "Reopen" : "Done"}
+                  </Button>
+                </form>
+
+                <form action={deleteTask}>
+                  <input type="hidden" name="taskId" value={t.id} />
+                  <Button size="sm" variant="danger">Delete</Button>
+                </form>
+              </div>
+            </div>
           ))}
           {tasks.length === 0 ? <div className="muted">No tasks yet.</div> : null}
         </div>
