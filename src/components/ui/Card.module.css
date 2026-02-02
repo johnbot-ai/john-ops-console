@@ -1,0 +1,20 @@
+.card{
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+}
+
+.inner{ padding: 14px; }
+
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.title{ font-size: 14px; color: var(--muted); letter-spacing: .2px; }
+
+.kpi{ font-size: 22px; font-weight: 650; color: var(--text); }
