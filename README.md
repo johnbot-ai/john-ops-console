@@ -16,6 +16,48 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Task Manager Backend (Vercel Postgres)
+
+This app exposes a simple JSON API for Projects + Tasks.
+
+### 1) Configure database
+
+Set `POSTGRES_URL` in your environment (Vercel Postgres connection string).
+
+### 2) Apply schema
+
+```bash
+psql "$POSTGRES_URL" -f db/schema.sql
+```
+
+### 3) Seed demo data (optional)
+
+```bash
+npm run db:seed
+```
+
+### API endpoints
+
+- `GET /api/health`
+- `GET /api/projects`
+- `POST /api/projects`
+- `GET /api/projects/:projectId`
+- `PATCH /api/projects/:projectId`
+- `DELETE /api/projects/:projectId`
+- `GET /api/projects/:projectId/tasks`
+- `POST /api/projects/:projectId/tasks`
+- `GET /api/tasks/:taskId`
+- `PATCH /api/tasks/:taskId`
+- `DELETE /api/tasks/:taskId`
+
+Example:
+
+```bash
+curl -s -X POST http://localhost:3000/api/projects \
+  -H "content-type: application/json" \
+  -d '{"title":"My Project","description":"ops work"}'
+```
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
