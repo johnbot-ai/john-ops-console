@@ -22,13 +22,25 @@ export default async function ProjectDetailPage(props: { params: Promise<{ proje
     const title = String(formData.get("title") ?? "").trim();
     const status = String(formData.get("status") ?? "todo");
     const priority = String(formData.get("priority") ?? "med");
+    const tagsRaw = String(formData.get("tags") ?? "").trim();
+    const dueAtRaw = String(formData.get("dueAt") ?? "").trim();
 
     if (!title) return;
 
-    await sql`
-      INSERT INTO tasks (project_id, title, status, priority)
-      VALUES (${projectId}, ${title}, ${status}, ${priority})
-    `;
+    const tags = tagsRaw
+      ? tagsRaw
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [];
+
+    const dueAt = dueAtRaw ? new Date(dueAtRaw).toISOString() : null;
+
+    // Use sql.query here because @vercel/postgres template literal types don't love arrays.
+    await sql.query(
+      "INSERT INTO tasks (project_id, title, status, priority, tags, due_at) VALUES ($1,$2,$3,$4,$5,$6)",
+      [projectId, title, status, priority, tags, dueAt]
+    );
 
     redirect(`/projects/${projectId}`);
   }
@@ -90,6 +102,15 @@ export default async function ProjectDetailPage(props: { params: Promise<{ proje
               </Field>
               <div style={{ alignSelf: "end" }}>
                 <Button type="submit" variant="primary">Add</Button>
+              </div>
+
+              <div style={{ gridColumn: "1 / -1", display: "grid", gap: 10, gridTemplateColumns: "2fr 1fr" }}>
+                <Field label="Tags" hint="Comma-separated">
+                  <Input name="tags" placeholder="ops, urgent" />
+                </Field>
+                <Field label="Due" hint="Optional">
+                  <Input name="dueAt" type="datetime-local" />
+                </Field>
               </div>
             </form>
           </CardInner>
